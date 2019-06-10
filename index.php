@@ -64,7 +64,7 @@
 
     <div>
         <label for="imagen">Foto de Perfil</label>
-        <input type="file" name="imagen[]" id="imagen" accept="image/*" multiple>
+        <input type="file" name="imagen" id="imagen" accept="image/*">
     </div>
     <input type="submit" value="Enviar">
 

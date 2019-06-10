@@ -1,6 +1,17 @@
 <?php
 
-function validar($datos){
+function validar($datos, $arc){
+    $archivo = explode('.',$arc['imagen']['name']);
+    $nombre = '';
+    $extension = $archivo[count($archivo)-1];
+
+    for($i = 0;$i < (count($archivo)-1);$i++){
+        $nombre = $nombre . $archivo[$i] . '.';
+    }
+
+    $nombre_final = $nombre . time() . '-' . mt_rand(1000,9999) . '.' . $extension;
+    $url = 'imagenes/' . $nombre_final;
+    move_uploaded_file($arc['imagen']['tmp_name'], $url);
 
     $numero_cuenta=$datos['numero_cuenta'] ?? '';
     $primer_nombre=$datos['primer_nombre'] ?? '';
@@ -37,15 +48,16 @@ function validar($datos){
         try{
             $pdo= new PDO('mysql:dbname=matricula;host=127.0.0.1','root','1234');
             $stmt= $pdo->prepare("INSERT INTO estudiantes(numero_cuenta,primer_nombre,apellido,
-                            fecha_nacimiento,correo
-                            )VALUE (?,?,?,?,?)");
+                            fecha_nacimiento,correo,nombre_imagen
+                            )VALUE (?,?,?,?,?,?)");
             $stmt->bindValue(1,$numero_cuenta);
             $stmt->bindValue(2,$primer_nombre);
             $stmt->bindValue(3,$apellido);
             $stmt->bindValue(4,$fecha);
             $stmt->bindValue(5,$correo);
+            $stmt->bindValue(6,$url);
             $stmt->execute();
-            return "Guardado";
+            echo "Guardado";
         }catch (PDOException $e){
             echo $e->getMessage();
         }

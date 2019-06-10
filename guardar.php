@@ -2,10 +2,5 @@
 include 'validaciones.php';
 
 if (!empty($_POST)){
-
-
-
-
-    validar($_POST);
-
+    validar($_POST, $_FILES);
 }
